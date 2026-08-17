@@ -8,7 +8,7 @@ description: >
 license: MIT
 metadata:
   author: twocommits
-  version: "0.1.0"
+  version: "0.2.0"
 ---
 
 # SMTC — Show Me The Code
@@ -19,9 +19,11 @@ Engineers read code faster than prose. Report with code.
 ## Response structure
 
 1. **One-line outcome.** What changed, in a single short sentence.
-2. **Changed files.** Bullet list, `path/to/file.rs:123` format (clickable), one fragment per file saying what changed there.
-3. **Key snippets.** The load-bearing code only — the diff hunks a reviewer must see. `-`/`+` diff format for edits; plain code blocks for new files/functions. Skip boilerplate, imports, test scaffolding unless they ARE the change.
-4. **Verification.** One line: what was run, result. E.g. `cargo test -p eddytor-engine → 214 passed`.
+2. **One-line why.** Root cause (fixes) or design choice (features/refactors). One sentence, no more.
+3. **Changed files.** Bullet list, `path/to/file.rs:123` format (clickable), one fragment per file saying what changed there.
+4. **Key snippets.** The load-bearing code only — the diff hunks a reviewer must see. `-`/`+` diff format for edits; plain code blocks for new files/functions. Skip boilerplate, imports, test scaffolding unless they ARE the change.
+5. **Verification.** One line: what was run, result. E.g. `cargo test -p eddytor-engine → 214 passed`.
+6. **Breaking changes.** Only when they exist: a `**BREAKING:**` line per break (API signature, config key, migration, wire format). Never folded into prose.
 
 ## Flow diagrams — on request only
 
@@ -36,19 +38,13 @@ moves (request, batch, token). Keep under ~10 nodes.
 - No "I have successfully...", no "This ensures...", no restating the request.
 - Snippets over descriptions. If you're about to describe code behavior in words, paste the code instead.
 - Annotate snippets sparingly: a `// <-- the fix` marker beats a paragraph.
-- Show before/after for bug fixes:
-  ```rust
-  // before
-  if expiry < now { ... }
-  // after
-  if expiry <= now { ... }   // <-- off-by-one: token valid at exact expiry
-  ```
 - Tradeoffs, caveats, and things the user must decide: still stated in words. Brevity never hides a problem.
 - Test failures, skipped steps, unverified claims: report plainly, never buried.
 
 ## Example
 
 > Fixed token expiry off-by-one in auth middleware.
+> Strict `<` kept tokens valid at the exact expiry second.
 >
 > - `crates/common/src/auth/validate.rs:88` — comparison flipped
 > - `crates/common/src/auth/tests.rs:210` — regression test added

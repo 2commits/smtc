@@ -36,6 +36,33 @@ curl -fsSL https://raw.githubusercontent.com/2commits/smtc/main/SKILL.md \
 
 Claude Code applies it automatically when summarizing coding work; `/smtc` invokes it explicitly.
 
+**Always-on (recommended):** skill invocation is model-discretionary and long sessions can
+compact the loaded rules away. A `SessionStart` hook injects them unconditionally:
+
+```sh
+mkdir -p ~/.claude/hooks
+cat > ~/.claude/hooks/smtc-sessionstart.sh <<'EOF'
+#!/usr/bin/env bash
+SKILL="$HOME/.claude/skills/smtc/SKILL.md"
+[ -f "$SKILL" ] || exit 0
+echo "SMTC MODE ACTIVE — code-first reporting. Apply these rules to every coding-work summary this session:"
+sed '1,/^---$/d' "$SKILL"
+EOF
+chmod +x ~/.claude/hooks/smtc-sessionstart.sh
+```
+
+Then add to `~/.claude/settings.json`:
+
+```json
+"hooks": {
+  "SessionStart": [
+    { "hooks": [ { "type": "command", "command": "bash \"$HOME/.claude/hooks/smtc-sessionstart.sh\"" } ] }
+  ]
+}
+```
+
+The hook reads the installed skill file, so re-running the install `curl` updates both paths.
+
 ### Cursor
 
 ```sh

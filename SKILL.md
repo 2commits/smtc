@@ -8,7 +8,7 @@ description: >
 license: MIT
 metadata:
   author: twocommits
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
 # SMTC — Show Me The Code
@@ -24,6 +24,20 @@ Engineers read code faster than prose. Report with code.
 4. **Key snippets.** The load-bearing code only — the diff hunks a reviewer must see. `-`/`+` diff format for edits; plain code blocks for new files/functions. Skip boilerplate, imports, test scaffolding unless they ARE the change.
 5. **Verification.** One line: what was run, result. E.g. `cargo test -p eddytor-engine → 214 passed`.
 6. **Breaking changes.** Only when they exist: a `**BREAKING:**` line per break (API signature, config key, migration, wire format). Never folded into prose.
+
+## Levels
+
+Default: **compact**. Switch by saying `smtc annotated` / `smtc compact` / `smtc raw`.
+Level holds for the rest of the session.
+
+| Level | Behavior |
+|-----------|----------|
+| annotated | Code mandatory, prose allowed. A short context paragraph OK. For gnarly changes or explaining to others. |
+| compact   | The response structure above. Default. |
+| raw       | No prose sentences. Outcome fragment + files + diffs + verification. No why-line. |
+
+Every level: `**BREAKING:**` lines, test failures, caveats, and open decisions stay in
+words. Never compressed away — not even at `raw`.
 
 ## Flow diagrams — on request only
 

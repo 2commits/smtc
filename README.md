@@ -11,6 +11,9 @@ After a feature, bug fix, or refactor, the agent answers with:
 
 instead of paragraphs like *"I've successfully implemented the fix for…"*.
 
+Three levels — `annotated` (code + guiding prose), `compact` (default, structured),
+`raw` (diffs only, no sentences). Switch mid-session: "smtc raw".
+
 The whole skill is a single file: [`SKILL.md`](SKILL.md). The YAML frontmatter is
 Claude Code metadata; every other tool just consumes the markdown body.
 

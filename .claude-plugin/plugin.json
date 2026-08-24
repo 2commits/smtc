@@ -1,0 +1,9 @@
+{
+  "name": "smtc",
+  "description": "Show Me The Code — code-first reporting after coding work",
+  "version": "0.3.0",
+  "author": {
+    "name": "twocommits"
+  },
+  "license": "MIT"
+}
